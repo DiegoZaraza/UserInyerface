@@ -1,9 +1,12 @@
 package org.userinyerface.pageobject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
 
 public class GamePageObjects extends BasePage {
     WebDriver driver;
@@ -17,13 +20,24 @@ public class GamePageObjects extends BasePage {
     @FindBy(xpath = "//input[@placeholder='Your email']")
     WebElement txtNicknameMail;
 
+    @FindBy(xpath = "//input[@placeholder='Domain']")
+    WebElement txtDomainName;
+
+    @FindBy(className = "dropdown__opener")
+    WebElement dropDownDomainType;
+
+    @FindBy(className = "dropdown__list-item")
+    List<WebElement> listDomainCodes;
+
+    @FindBy(className = "checkbox__box")
+    WebElement checkAcceptTerms;
+
     public GamePageObjects(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
     public void setTxtPassword(String password) {
-        System.out.println(password);
         clearTxt(txtPassword, "Clear txt until introduce password");
         sendKeys(txtPassword, password, "Send txt password");
     }
@@ -31,10 +45,25 @@ public class GamePageObjects extends BasePage {
     public void clickBtbNoCookies() throws InterruptedException {
         setImplicitlyWait();
         click(btnNoCookies, "Clik No for cookies");
-        Thread.sleep(10000);
     }
 
-    public void setTxtNicknameMail(String Nickname){
+    public void setTxtNicknameMail(String nickname) {
+        clearTxt(txtNicknameMail, "Clear txt nickname until introduce nickname");
+        sendKeys(txtNicknameMail, nickname, "Type nickname");
+    }
 
+    public void setDomainName(String domain) {
+        clearTxt(txtDomainName, "");
+        sendKeys(txtDomainName, domain, "");
+    }
+
+    public void selectDomainType() {
+        click(dropDownDomainType, "Click on domain type list");
+        int randomDomainCode = (int) (Math.random() * listDomainCodes.size());
+        click(listDomainCodes.get(randomDomainCode), "");
+    }
+
+    public void clickAcceptTerms() {
+        click(checkAcceptTerms, "");
     }
 }

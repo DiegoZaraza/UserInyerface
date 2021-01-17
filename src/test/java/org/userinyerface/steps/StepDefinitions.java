@@ -1,5 +1,6 @@
 package org.userinyerface.steps;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -19,6 +20,7 @@ public class StepDefinitions {
     private MainPageObjects mainPageObjects;
     private GamePageObjects gamePageObjects;
     private StringUtils stringUtils;
+    public Faker faker;
 
     @Before
     public void setup() {
@@ -26,6 +28,7 @@ public class StepDefinitions {
         mainPageObjects = new MainPageObjects(webDriver);
         gamePageObjects = new GamePageObjects(webDriver);
         stringUtils = new StringUtils();
+        faker = new Faker();
         webDriver.manage().window().maximize();
     }
 
@@ -42,12 +45,29 @@ public class StepDefinitions {
 
     @When("User insert password")
     public void user_insert_password() {
-        gamePageObjects.setTxtPassword(stringUtils.textGeneration(10));
+        gamePageObjects.setTxtPassword(stringUtils.textGeneration(15));
     }
 
     @When("User click in button NO for cookies")
     public void userClickInButtonNOForCookies() throws InterruptedException {
         gamePageObjects.clickBtbNoCookies();
+    }
+
+    @When("User insert nickname")
+    public void userInsertNickname() throws InterruptedException {
+        String nickname = faker.pokemon().name();
+        gamePageObjects.setTxtNicknameMail(nickname);
+    }
+
+    @When("User insert domain for mail")
+    public void userInsertDomainForMail() {
+        String domain = faker.internet().domainName();
+        gamePageObjects.setDomainName(domain);
+    }
+
+    @When("Select domain code")
+    public void selectDomainCode() throws InterruptedException {
+        gamePageObjects.selectDomainType();
     }
     /*
     @When("Entering number {int} and {int}")
@@ -77,5 +97,9 @@ public class StepDefinitions {
         }
     }
 
-
+    @When("Click on accept terms")
+    public void clickOnAcceptTerms() throws InterruptedException {
+        gamePageObjects.clickAcceptTerms();
+        Thread.sleep(10000);
+    }
 }

@@ -4,11 +4,11 @@ org/userinyerface/utilities/Logger.java
  org.userinyerface.utilities.Logger
 org/userinyerface/utilities/PropertiesRead.java
  org.userinyerface.utilities.PropertiesRead
-org/userinyerface/pageobject/BasePage.java
- org.userinyerface.pageobject.BasePage
 org/userinyerface/pageobject/MainPageObjects.java
  org.userinyerface.pageobject.MainPageObjects
-org/userinyerface/steps/StepDefinitions.java
- org.userinyerface.steps.StepDefinitions
+org/userinyerface/pageobject/BasePage.java
+ org.userinyerface.pageobject.BasePage
 org/userinyerface/pageobject/GamePageObjects.java
  org.userinyerface.pageobject.GamePageObjects
+org/userinyerface/steps/StepDefinitions.java
+ org.userinyerface.steps.StepDefinitions

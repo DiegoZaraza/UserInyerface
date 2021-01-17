@@ -1,5 +1,6 @@
 package org.userinyerface.pageobject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,15 +21,14 @@ public class MainPageObjects extends BasePage {
     }
 
     public String getLinkStart() {
-        return linkStart.getText();
+        return getText(linkStart, "");
     }
 
     public void clickLinkStart() {
         click(linkStart, "Click HERE");
-        // linkStart.click();
     }
 
     public void clickBtnNo() {
-        btnNo.click();
+        click(btnNo, "");
     }
 }

@@ -57,6 +57,46 @@ formatter.match({
 formatter.result({
   "status": "passed"
 });
+formatter.step({
+  "name": "User insert nickname",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "org.userinyerface.steps.StepDefinitions.userInsertNickname()"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "User insert domain for mail",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "org.userinyerface.steps.StepDefinitions.userInsertDomainForMail()"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "Select domain code",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "org.userinyerface.steps.StepDefinitions.selectDomainCode()"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "Click on accept terms",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "org.userinyerface.steps.StepDefinitions.clickOnAcceptTerms()"
+});
+formatter.result({
+  "status": "passed"
+});
 formatter.after({
   "status": "passed"
 });

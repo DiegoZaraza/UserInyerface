@@ -104,3 +104,9 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+build/
+.idea/
+.gradle/
+out
+*.iml
