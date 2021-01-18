@@ -1,27 +1,30 @@
 package org.userinyerface.pageobject;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.userinyerface.utilities.PropertiesRead;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BasePage {
-    private static WebDriver driver = null;
-    private static final int TIMEOUT = Integer.parseInt(PropertiesRead.readFromFrameworkConfig("timeout"));
     static final Logger log = Logger.getLogger(BasePage.class);
+    private static final int TIMEOUT = Integer.parseInt(PropertiesRead.readFromFrameworkConfig("timeout"));
+    private static WebDriver driver = null;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }
 
+    public static void setImplicitlyWait() {
+        log.info("Timeout is " + TIMEOUT);
+        driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+    }
+
     public void waitForVisibility(WebElement e) {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, 40);
         wait.until(ExpectedConditions.visibilityOf(e));
     }
 
@@ -45,13 +48,10 @@ public class BasePage {
     }
 
     public String getText(WebElement e, String msg) {
-        return getAttribute(e, "text");
+        return e.getText();
     }
 
-    /*public List<WebElement> getList(WebElement e, String msg) { return e; }*/
-
-    public static void setImplicitlyWait() {
-        log.info("Timeout is " + TIMEOUT);
-        driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+    public boolean isDisplayed(WebElement e, String msg) {
+        return e.isDisplayed();
     }
 }

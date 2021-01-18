@@ -5,28 +5,45 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.userinyerface.pageobject.GamePageObjects;
+import org.userinyerface.pageobject.FirstGamePageObjects;
 import org.userinyerface.pageobject.MainPageObjects;
+import org.userinyerface.pageobject.SecondGamePageObjects;
+import org.userinyerface.pageobject.ThirdGamePageObjects;
+import org.userinyerface.utilities.PropertiesRead;
+import org.userinyerface.utilities.ScripExecution;
 import org.userinyerface.utilities.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class StepDefinitions {
-    private WebDriver webDriver;
-    private String baseUrl = "https://userinyerface.com/";
-    private MainPageObjects mainPageObjects;
-    private GamePageObjects gamePageObjects;
-    private StringUtils stringUtils;
+    private static final String PAGE = PropertiesRead.readFromFrameworkConfig("URL");
+    private static final String FILE = PropertiesRead.readFromDataConfig("FILE");
     public Faker faker;
+    private WebDriver webDriver;
+    private SoftAssertions softAssertions;
+    private MainPageObjects mainPageObjects;
+    private FirstGamePageObjects firstGamePageObjects;
+    private SecondGamePageObjects secondGamePageObjects;
+    private ThirdGamePageObjects thirdGamePageObjects;
+    private ScripExecution scriptExecution;
+    private StringUtils stringUtils;
 
     @Before
     public void setup() {
         webDriver = new ChromeDriver();
         mainPageObjects = new MainPageObjects(webDriver);
-        gamePageObjects = new GamePageObjects(webDriver);
+        firstGamePageObjects = new FirstGamePageObjects(webDriver);
+        secondGamePageObjects = new SecondGamePageObjects(webDriver);
+        thirdGamePageObjects = new ThirdGamePageObjects(webDriver);
+        softAssertions = new SoftAssertions();
+        scriptExecution = new ScripExecution();
         stringUtils = new StringUtils();
         faker = new Faker();
         webDriver.manage().window().maximize();
@@ -35,63 +52,44 @@ public class StepDefinitions {
     @Given("Open userinyerface.com")
     public void open_userinyerface_com() {
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        webDriver.get(baseUrl);
+        webDriver.get(PAGE);
     }
 
-    @And("Click on link HERE")
+    @Given("Click on link HERE")
     public void clickOnLinkHERE() {
         mainPageObjects.clickLinkStart();
     }
 
     @When("User insert password")
     public void user_insert_password() {
-        gamePageObjects.setTxtPassword(stringUtils.textGeneration(15));
+        firstGamePageObjects.setTxtPassword(stringUtils.textGeneration(15));
     }
 
     @When("User click in button NO for cookies")
     public void userClickInButtonNOForCookies() throws InterruptedException {
-        gamePageObjects.clickBtbNoCookies();
+        firstGamePageObjects.clickBtbNoCookies();
     }
 
     @When("User insert nickname")
     public void userInsertNickname() throws InterruptedException {
         String nickname = faker.pokemon().name();
-        gamePageObjects.setTxtNicknameMail(nickname);
+        firstGamePageObjects.setTxtNicknameMail(nickname);
     }
 
     @When("User insert domain for mail")
     public void userInsertDomainForMail() {
-        String domain = faker.internet().domainName();
-        gamePageObjects.setDomainName(domain);
+        String domain = faker.superhero().name();
+        firstGamePageObjects.setDomainName(domain);
     }
 
     @When("Select domain code")
     public void selectDomainCode() throws InterruptedException {
-        gamePageObjects.selectDomainType();
-    }
-    /*
-    @When("Entering number {int} and {int}")
-    public void entering_number_and(Integer first, Integer second) {
-        WebElement googleTextBox = webDriver.findElement(By.className("gLFyf"));
-        googleTextBox.sendKeys(first + " + " + second);
+        firstGamePageObjects.selectDomainType();
     }
 
-    @When("Press enter")
-    public void press_enter() {
-        WebElement searchButton = webDriver.findElement(By.className("gNO89b"));
-        searchButton.click();
-    }
-
-    @Then("Result should be {int}")
-    public void result_should_be(Integer result) {
-        WebElement calculatorTextBox = webDriver.findElement(By.className("qv3Wpe"));
-        Integer getResult = Integer.parseInt(calculatorTextBox.getText());
-        Assert.assertEquals(getResult, result);
-        webDriver.close();
-    }
-*/
     @After
     public void end() {
+        softAssertions.assertAll();
         if (webDriver != null) {
             webDriver.quit();
         }
@@ -99,7 +97,54 @@ public class StepDefinitions {
 
     @When("Click on accept terms")
     public void clickOnAcceptTerms() throws InterruptedException {
-        gamePageObjects.clickAcceptTerms();
-        Thread.sleep(10000);
+        firstGamePageObjects.clickAcceptTerms();
+    }
+
+    @Then("Validate button NO is present")
+    public void validateButtonNOIsPresent() {
+        mainPageObjects.getLinkStart();
+        softAssertions.assertThat(mainPageObjects.btnNoVisible());
+    }
+
+    @Then("Cookies closed")
+    public void cookiesClosed() {
+        boolean val = false;
+        if (!firstGamePageObjects.cookiesIsClosed()) {
+            val = true;
+        }
+        softAssertions.assertThat(val);
+    }
+
+    @And("Click button Next")
+    public void clickButtonNext() throws InterruptedException {
+        firstGamePageObjects.clickBtnNext();
+    }
+
+    @Then("Validate enter second page")
+    public void validateEnterSecondPage() throws InterruptedException {
+        softAssertions.assertThat(secondGamePageObjects.getThisIsMe()).isEqualTo("2 / 4");
+    }
+
+    @When("Browser avatar")
+    public void browserAvatar() throws InterruptedException, IOException {
+        secondGamePageObjects.browserAvatar();
+        scriptExecution.uploadFile(FILE);
+    }
+
+    @When("Choose hobbies")
+    public void chooseHobbies() throws InterruptedException {
+        secondGamePageObjects.chooseDifferentHobbies(3);
+    }
+
+    @And("Click on button Next")
+    public void clickOnButtonNext() throws InterruptedException {
+        //Thread.sleep(5000);
+        secondGamePageObjects.clickBtnNext();
+        //Thread.sleep(5000);
+    }
+
+    @Then("Validate enter third page")
+    public void validateEnterThirdPage() {
+
     }
 }

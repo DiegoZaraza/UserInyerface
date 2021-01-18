@@ -1,6 +1,5 @@
 package org.userinyerface.pageobject;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
-public class GamePageObjects extends BasePage {
+public class FirstGamePageObjects extends BasePage {
     WebDriver driver;
 
     @FindBy(xpath = "//input[@placeholder='Choose Password']")
@@ -32,7 +31,10 @@ public class GamePageObjects extends BasePage {
     @FindBy(className = "checkbox__box")
     WebElement checkAcceptTerms;
 
-    public GamePageObjects(WebDriver driver) {
+    @FindBy(className = "button--secondary")
+    WebElement btnNext;
+
+    public FirstGamePageObjects(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
@@ -43,7 +45,7 @@ public class GamePageObjects extends BasePage {
     }
 
     public void clickBtbNoCookies() throws InterruptedException {
-        setImplicitlyWait();
+        waitForVisibility(btnNoCookies);
         click(btnNoCookies, "Clik No for cookies");
     }
 
@@ -59,11 +61,20 @@ public class GamePageObjects extends BasePage {
 
     public void selectDomainType() {
         click(dropDownDomainType, "Click on domain type list");
+        listDomainCodes.remove(0);
         int randomDomainCode = (int) (Math.random() * listDomainCodes.size());
         click(listDomainCodes.get(randomDomainCode), "");
     }
 
     public void clickAcceptTerms() {
         click(checkAcceptTerms, "");
+    }
+
+    public boolean cookiesIsClosed() {
+        return isDisplayed(btnNoCookies, "");
+    }
+
+    public void clickBtnNext() {
+        click(btnNext, "");
     }
 }
