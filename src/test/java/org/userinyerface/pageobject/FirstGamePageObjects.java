@@ -61,8 +61,10 @@ public class FirstGamePageObjects extends BasePage {
 
     public void selectDomainType() {
         click(dropDownDomainType, "Click on domain type list");
-        listDomainCodes.remove(0);
-        int randomDomainCode = (int) (Math.random() * listDomainCodes.size());
+        int randomDomainCode = 0;
+        while(randomDomainCode == 0) {
+            randomDomainCode = (int) (Math.random() * listDomainCodes.size());
+        }
         click(listDomainCodes.get(randomDomainCode), "");
     }
 

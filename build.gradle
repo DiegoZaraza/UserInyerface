@@ -31,7 +31,14 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'html:reports/test-report', '--plugin', 'pretty', '--glue', 'org.userinyerface.steps', 'src/test/resources']
+
+            args = [
+                    '--plugin', 'html:reports/test-report',
+                    '--plugin', 'pretty',
+                    '--glue', 'org.userinyerface.steps', 'src/test/resources',
+                    '--tags', '@MainPage or @FirstPage or @SecondPage or @ThirdPage'
+            ]
         }
     }
 }
+

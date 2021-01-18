@@ -72,13 +72,13 @@ public class StepDefinitions {
 
     @When("User insert nickname")
     public void userInsertNickname() throws InterruptedException {
-        String nickname = faker.pokemon().name();
+        String nickname = faker.pokemon().name().replace(" ","");;
         firstGamePageObjects.setTxtNicknameMail(nickname);
     }
 
     @When("User insert domain for mail")
     public void userInsertDomainForMail() {
-        String domain = faker.superhero().name();
+        String domain = faker.superhero().name().replace(" ","");
         firstGamePageObjects.setDomainName(domain);
     }
 
@@ -138,13 +138,17 @@ public class StepDefinitions {
 
     @And("Click on button Next")
     public void clickOnButtonNext() throws InterruptedException {
-        //Thread.sleep(5000);
         secondGamePageObjects.clickBtnNext();
-        //Thread.sleep(5000);
     }
 
     @Then("Validate enter third page")
     public void validateEnterThirdPage() {
+        softAssertions.assertThat(thirdGamePageObjects.getPageIndicator()).isEqualTo("3 / 4");
+    }
 
+    @When("Print values")
+    public void printValues() throws InterruptedException {
+        Thread.sleep(5000);
+        thirdGamePageObjects.selectList();
     }
 }

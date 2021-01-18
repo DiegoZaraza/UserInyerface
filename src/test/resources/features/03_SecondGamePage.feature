@@ -1,3 +1,4 @@
+@SecondPage
 Feature: Validate Firts Game Page
 
   Background:
@@ -16,3 +17,4 @@ Feature: Validate Firts Game Page
     And Choose hobbies
     And Click on button Next
     Then Validate enter third page
+    And Print values

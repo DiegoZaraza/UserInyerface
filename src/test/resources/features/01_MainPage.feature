@@ -1,3 +1,4 @@
+@MainPage
 Feature: Validate Main Page
 
   Scenario: Validate load page correct
